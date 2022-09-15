@@ -3,7 +3,7 @@ import { Button, Grid } from "@mui/material";
 import { ColorToggleButton } from "./ToggleButton";
 
 export const Header = () => {
-  const [alignment, setAlignment] = React.useState("web");
+  const [alignment, setAlignment] = React.useState("Administrative");
 
   const handleToggle = (event, newAlignment) => {
     setAlignment(newAlignment);

@@ -11,8 +11,8 @@ export const ColorToggleButton = ({ alignment, handleChange }) => {
       onChange={handleChange}
       aria-label="Platform"
     >
-      <ToggleButton value="web">Administrative</ToggleButton>
-      <ToggleButton value="android">Functional</ToggleButton>
+      <ToggleButton value="Administrative">Administrative</ToggleButton>
+      <ToggleButton value="Functional">Functional</ToggleButton>
     </ToggleButtonGroup>
   );
 };
