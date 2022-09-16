@@ -3,7 +3,7 @@ import { Button, Grid } from "@mui/material";
 import { ColorToggleButton } from "./ToggleButton";
 import AddNewEmployee from "./AddNewEmployee/AddNewEmployee";
 
-export const Header = ({ data }) => {
+export const Header = ({ employeeData, setEmployeeData }) => {
   const [alignment, setAlignment] = React.useState("web");
   const [open, setOpen] = React.useState(false);
   const handleToggle = (event, newAlignment) => {
@@ -17,7 +17,12 @@ export const Header = ({ data }) => {
 
   return (
     <>
-      <AddNewEmployee open={open} close={() => setOpen()} />
+      <AddNewEmployee
+        open={open}
+        close={() => setOpen()}
+        employeeData={employeeData}
+        setEmployeeData={setEmployeeData}
+      />
       <Grid
         container
         direction={"row"}

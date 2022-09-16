@@ -29,11 +29,15 @@ const DraggableListItem = ({ item, index }) => {
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
           <TableCell component="th" scope="row">
-            {item.first}
+            {item.name}
           </TableCell>
-          <TableCell align="right">{item.second}</TableCell>
-          <TableCell align="right">{item.third}</TableCell>
-          <TableCell align="right">{item.fourth}</TableCell>
+          <TableCell>{item.employeeId}</TableCell>
+          <TableCell>{item.name}</TableCell>
+          <TableCell>{item.designation}</TableCell>
+          <TableCell>{item?.admin?.userLevel}</TableCell>
+          <TableCell>{item?.admin?.managerName}</TableCell>
+          <TableCell>{item?.functional?.managerName}</TableCell>
+          <TableCell>{item.squad}</TableCell>
         </TableRow>
       )}
     </Draggable>

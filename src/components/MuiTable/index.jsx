@@ -6,6 +6,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { db } from "../../firebase-config";
+import { collection, getDocs } from "firebase/firestore";
 import DraggableList from "./DraggableList";
 import { reorder } from "./helpers";
 import { ITEMS } from "../Table/data";
@@ -22,9 +24,25 @@ const useStyles = makeStyles({
   },
 });
 
-const MuiTable = () => {
+const MuiTable = ({ employeeData, setEmployeeData }) => {
   const classes = useStyles();
-  const [items, setItems] = React.useState(ITEMS);
+  const [items, setItems] = React.useState(employeeData);
+
+  const usersCollectionRef = collection(db, "employees");
+  const getUsers = async () => {
+    const userData = await getDocs(usersCollectionRef);
+    setEmployeeData(
+      userData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    );
+    console.log(
+      ">>>>>userData",
+      userData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    );
+  };
+
+  React.useEffect(() => {
+    getUsers();
+  }, []);
 
   const onDragEnd = ({ destination, source }) => {
     // dropped outside the list
@@ -41,19 +59,19 @@ const MuiTable = () => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
+              <TableCell>Hierarchy</TableCell>
               <TableCell>Employee Id</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Designation</TableCell>
-              <TableCell align="right">Level</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Designation</TableCell>
+              <TableCell>Level</TableCell>
+              <TableCell>Administrative Manager</TableCell>
+              <TableCell>Functional Manager</TableCell>
+              <TableCell>Squads</TableCell>
             </TableRow>
           </TableHead>
           <DraggableList items={items} onDragEnd={onDragEnd} />
         </Table>
       </TableContainer>
-
-      {/* <Paper className={classes.flexPaper}>
-        <pre>{JSON.stringify(items, null, 2)}</pre>
-      </Paper> */}
     </div>
   );
 };

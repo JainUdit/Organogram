@@ -16,8 +16,12 @@ import {
   doc,
 } from "firebase/firestore";
 
-export default function AddNewEmployee({ open, close }) {
-  const [data, setData] = React.useState([]);
+export default function AddNewEmployee({
+  open,
+  close,
+  employeeData,
+  setEmployeeData,
+}) {
   const [addEmployee, setAddEmployee] = useState({
     name: "",
     empId: "",
@@ -30,21 +34,26 @@ export default function AddNewEmployee({ open, close }) {
     adminLevel: "",
     functionLevel: "",
   });
+
   const usersCollectionRef = collection(db, "employees");
   const getUsers = async () => {
-    const data = await getDocs(usersCollectionRef);
-    setData(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    const userData = await getDocs(usersCollectionRef);
+    setEmployeeData(
+      userData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    );
   };
-  useEffect(() => {
-    getUsers();
-  }, []);
+
+  // useEffect(() => {
+  //   getUsers();
+  // }, []);
+
   useEffect(() => {
     getAdminUserLevel();
     getAdminId();
     getFunctionalId();
     getFunctionalUserLevel();
   }, [addEmployee.functionalManagerName, addEmployee.adminManagerName]);
-  console.log(addEmployee);
+
   const handleClose = () => {
     setAddEmployee({
       name: "",
@@ -61,7 +70,7 @@ export default function AddNewEmployee({ open, close }) {
     close(false);
   };
   const getAdminUserLevel = () => {
-    data?.map((val) => {
+    employeeData?.map((val) => {
       if (val.name === addEmployee.adminManagerName)
         setAddEmployee((prev) => ({
           ...prev,
@@ -71,7 +80,7 @@ export default function AddNewEmployee({ open, close }) {
   };
 
   const getAdminId = () => {
-    data?.map((val) => {
+    employeeData?.map((val) => {
       if (val.name === addEmployee.adminManagerName) {
         setAddEmployee((prev) => ({
           ...prev,
@@ -81,7 +90,7 @@ export default function AddNewEmployee({ open, close }) {
     });
   };
   const getFunctionalId = () => {
-    data?.map((val) => {
+    employeeData?.map((val) => {
       if (val.name === addEmployee.functionalManagerName) {
         setAddEmployee((prev) => ({
           ...prev,
@@ -91,7 +100,7 @@ export default function AddNewEmployee({ open, close }) {
     });
   };
   const getFunctionalUserLevel = () => {
-    data?.map((val) => {
+    employeeData?.map((val) => {
       if (val.name === addEmployee.functionalManagerName) {
         setAddEmployee((prev) => ({
           ...prev,
@@ -109,12 +118,12 @@ export default function AddNewEmployee({ open, close }) {
       admin: {
         managerId: addEmployee.adminId,
         managerName: addEmployee.adminManagerName,
-        userLevel: (Number(addEmployee.adminLevel) + 1),
+        userLevel: Number(addEmployee.adminLevel) + 1,
       },
       functional: {
         managerId: addEmployee.functionId,
         managerName: addEmployee.functionalManagerName,
-        userLevel: (Number(addEmployee.functionLevel) + 1),
+        userLevel: Number(addEmployee.functionLevel) + 1,
       },
     });
     close(false);
@@ -253,7 +262,7 @@ export default function AddNewEmployee({ open, close }) {
                   }));
                 }}
               >
-                {data.map((option) => (
+                {employeeData?.map((option) => (
                   <MenuItem key={option.id} value={option.name}>
                     {option.name}
                   </MenuItem>
@@ -279,7 +288,7 @@ export default function AddNewEmployee({ open, close }) {
                   }));
                 }}
               >
-                {data.map((option) => (
+                {employeeData?.map((option) => (
                   <MenuItem key={option.id} value={option.name}>
                     {option.name}
                   </MenuItem>

@@ -4,10 +4,8 @@ import TableBody from "@mui/material/TableBody";
 import DraggableListItem from "./DraggableListItem";
 
 const DraggableList = React.memo(({ items, onDragEnd }) => {
-  const onDragStart = () => console.log(">>>>>>start");
-
   return (
-    <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+    <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable-list">
         {(provided) => (
           <TableBody ref={provided.innerRef} {...provided.droppableProps}>
