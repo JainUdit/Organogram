@@ -25,7 +25,6 @@ const useStyles = makeStyles({
 
 const MuiTable = ({ employeeData, setEmployeeData }) => {
   const classes = useStyles();
-  const [items, setItems] = React.useState(employeeData);
 
   const usersCollectionRef = collection(db, "employees");
   const getUsers = async () => {
@@ -33,7 +32,6 @@ const MuiTable = ({ employeeData, setEmployeeData }) => {
     setEmployeeData(
       userData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     );
-    setItems(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     console.log(
       ">>>>>userData",
       userData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
@@ -48,9 +46,9 @@ const MuiTable = ({ employeeData, setEmployeeData }) => {
     // dropped outside the list
     if (!destination) return;
 
-    const newItems = reorder(items, source.index, destination.index);
+    const newItems = reorder(employeeData, source.index, destination.index);
 
-    setItems(newItems);
+    setEmployeeData(newItems);
   };
 
   return (
@@ -69,7 +67,7 @@ const MuiTable = ({ employeeData, setEmployeeData }) => {
               <TableCell>Squads</TableCell>
             </TableRow>
           </TableHead>
-          <DraggableList items={items} onDragEnd={onDragEnd} />
+          <DraggableList items={employeeData} onDragEnd={onDragEnd} />
         </Table>
       </TableContainer>
     </div>

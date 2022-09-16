@@ -25,7 +25,6 @@ const useStyles = makeStyles({
 
 const ViewTable = ({ employeeData, setEmployeeData }) => {
   const classes = useStyles();
-  const [items, setItems] = React.useState(employeeData);
 
   const usersCollectionRef = collection(db, "employees");
   const getUsers = async () => {
@@ -33,7 +32,6 @@ const ViewTable = ({ employeeData, setEmployeeData }) => {
     setEmployeeData(
       userData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     );
-    setItems(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
   React.useEffect(() => {
@@ -57,7 +55,7 @@ const ViewTable = ({ employeeData, setEmployeeData }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {items.map((item, index) => (
+            {employeeData.map((item, index) => (
               <VIewTableRow item={item} index={index} key={item.id} />
             ))}
           </TableBody>
