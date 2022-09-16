@@ -8,8 +8,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { db } from "../../firebase-config";
 import { collection, getDocs } from "firebase/firestore";
-import DraggableList from "./DraggableList";
-import { reorder } from "./helpers";
+import { TableBody } from "@mui/material";
+import VIewTableRow from "./VIewTableRow";
 
 const useStyles = makeStyles({
   flexPaper: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   },
 });
 
-const MuiTable = ({ employeeData, setEmployeeData }) => {
+const ViewTable = ({ employeeData, setEmployeeData }) => {
   const classes = useStyles();
   const [items, setItems] = React.useState(employeeData);
 
@@ -34,24 +34,11 @@ const MuiTable = ({ employeeData, setEmployeeData }) => {
       userData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     );
     setItems(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    console.log(
-      ">>>>>userData",
-      userData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    );
   };
 
   React.useEffect(() => {
     getUsers();
   }, []);
-
-  const onDragEnd = ({ destination, source }) => {
-    // dropped outside the list
-    if (!destination) return;
-
-    const newItems = reorder(items, source.index, destination.index);
-
-    setItems(newItems);
-  };
 
   return (
     <div className={classes.root}>
@@ -69,11 +56,15 @@ const MuiTable = ({ employeeData, setEmployeeData }) => {
               <TableCell>Squads</TableCell>
             </TableRow>
           </TableHead>
-          <DraggableList items={items} onDragEnd={onDragEnd} />
+          <TableBody>
+            {items.map((item, index) => (
+              <VIewTableRow item={item} index={index} key={item.id} />
+            ))}
+          </TableBody>
         </Table>
       </TableContainer>
     </div>
   );
 };
 
-export default MuiTable;
+export default ViewTable;

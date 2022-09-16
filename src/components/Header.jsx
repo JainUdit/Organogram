@@ -3,14 +3,22 @@ import { Button, Grid } from "@mui/material";
 import { ColorToggleButton } from "./ToggleButton";
 import AddNewEmployee from "./AddNewEmployee/AddNewEmployee";
 
-export const Header = ({ employeeData, setEmployeeData }) => {
-  const [alignment, setAlignment] = React.useState("web");
+export const Header = ({
+  employeeData,
+  setEmployeeData,
+  alignment,
+  setAlignment,
+  viewEditableTable,
+  setViewEditableTable,
+}) => {
   const [open, setOpen] = React.useState(false);
   const handleToggle = (event, newAlignment) => {
     setAlignment(newAlignment);
   };
 
-  const handleEditClick = () => {};
+  const handleEditClick = () => {
+    setViewEditableTable(!viewEditableTable);
+  };
   const handleAddNewEmployee = () => {
     setOpen(true);
   };
@@ -32,7 +40,7 @@ export const Header = ({ employeeData, setEmployeeData }) => {
         <ColorToggleButton alignment={alignment} handleChange={handleToggle} />
         <p>CET ORGANOGRAM</p>
         <Button variant="contained" onClick={handleEditClick}>
-          Edit
+          {viewEditableTable ? "View Table" : "Edit Table"}
         </Button>
         <Button variant="contained" onClick={handleAddNewEmployee}>
           Add New Employee
