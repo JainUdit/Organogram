@@ -34,6 +34,7 @@ const MuiTable = ({ employeeData, setEmployeeData }) => {
     setEmployeeData(
       userData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     );
+    setItems(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     console.log(
       ">>>>>userData",
       userData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
