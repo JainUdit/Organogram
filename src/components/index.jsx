@@ -1,5 +1,13 @@
 import { Header } from "./Header";
+import MuiTable from "./MuiTable";
+import { Table } from "./Table";
 
 export const Main = () => {
-  return <Header />;
+  return (
+    <>
+      <Header />
+      <Table />
+      <MuiTable />
+    </>
+  );
 };
