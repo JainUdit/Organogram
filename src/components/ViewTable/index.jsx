@@ -25,18 +25,34 @@ const useStyles = makeStyles({
 
 const ViewTable = ({ employeeData, setEmployeeData }) => {
   const classes = useStyles();
+  const [collapsedUserIds, setCollapsedUserIds] = React.useState([]);
+  const [flag, setFlag] = React.useState(true);
 
   const usersCollectionRef = collection(db, "employees");
   const getUsers = async () => {
     const userData = await getDocs(usersCollectionRef);
-    setEmployeeData(
-      userData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    );
+    const eData = userData.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+    setEmployeeData(eData);
   };
 
   React.useEffect(() => {
     getUsers();
   }, []);
+
+  const handleHierarchyClick = (item) => {
+    const collIds = collapsedUserIds;
+
+    if (collIds.includes(item.employeeId)) {
+      const index = collIds.indexOf(item.employeeId);
+      collIds.splice(index, 1);
+    } else {
+      collIds.push(item.employeeId);
+    }
+    setCollapsedUserIds(collIds);
+    console.log(flag);
+    setFlag(!flag);
+  };
 
   return (
     <div className={classes.root}>
@@ -56,7 +72,13 @@ const ViewTable = ({ employeeData, setEmployeeData }) => {
           </TableHead>
           <TableBody>
             {employeeData.map((item, index) => (
-              <VIewTableRow item={item} index={index} key={item.id} />
+              <VIewTableRow
+                item={item}
+                index={index}
+                key={item.id}
+                collapsedUserIds={collapsedUserIds}
+                handleHierarchyClick={handleHierarchyClick}
+              />
             ))}
           </TableBody>
         </Table>
